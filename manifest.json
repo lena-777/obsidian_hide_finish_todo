@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "claydi-plugin",
+	"name": "Claydi Plugin",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "claydi用于学习的个人插件",
+	"author": "claydichen",
+	"authorUrl": "",
+	"fundingUrl": "",
 	"isDesktopOnly": false
 }

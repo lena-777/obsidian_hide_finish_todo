@@ -30,19 +30,54 @@ module.exports = __toCommonJS(main_exports);
 var import_obsidian = require("obsidian");
 var MyPlugin = class extends import_obsidian.Plugin {
   async onload() {
+    await this.loadSettings();
     this.styleEl = document.createElement("style");
     this.styleEl.innerHTML = `
-					.HyperMD-task-line[data-task="x"] {
-						color: #ccc!important;
-					}
-					input[type=checkbox]:checked {
-						background-color: #ccc!important;
-						border-color: #ccc!important;
-					}
-        `;
+				.HyperMD-task-line[data-task="x"] {
+						display: none!important;
+				}
+			`;
+    if (this.settings.autoHide) {
+      this.show();
+    }
+    this.addSettingTab(new MySetting(this.app, this));
+  }
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
+  show() {
     document.head.appendChild(this.styleEl);
   }
+  hide() {
+    if (this.styleEl) {
+      document.head.removeChild(this.styleEl);
+    }
+  }
   onunload() {
-    document.head.removeChild(this.styleEl);
+    this.hide();
+  }
+  async loadSettings() {
+    this.settings = Object.assign(
+      { autoHide: true },
+      await this.loadData()
+    );
+  }
+};
+var MySetting = class extends import_obsidian.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    new import_obsidian.Setting(containerEl).setName("\u542F\u7528\u5B8C\u6210\u9690\u85CF").addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.autoHide);
+      toggle.onChange((bool) => {
+        this.plugin.settings.autoHide = bool;
+        this.plugin.saveSettings();
+        bool ? this.plugin.show() : this.plugin.hide();
+      });
+    });
   }
 };

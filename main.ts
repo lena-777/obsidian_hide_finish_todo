@@ -1,7 +1,7 @@
-import { Plugin } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
-	mySetting: string;
+	autoHide: boolean;
 }
 
 export default class MyPlugin extends Plugin {
@@ -9,20 +9,70 @@ export default class MyPlugin extends Plugin {
 	styleEl: HTMLStyleElement
 
 	async onload() {
+		await this.loadSettings()
+
 		this.styleEl = document.createElement('style');
 		this.styleEl.innerHTML = `
-					.HyperMD-task-line[data-task="x"] {
-						color: #ccc!important;
-					}
-					input[type=checkbox]:checked {
-						background-color: #ccc!important;
-						border-color: #ccc!important;
-					}
-        `;
+				.HyperMD-task-line[data-task="x"] {
+						display: none!important;
+				}
+			`;
+
+		if (this.settings.autoHide) {
+			this.show()
+		}
+
+
+		this.addSettingTab(new MySetting(this.app, this))
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings)
+	}
+
+	show() {
 		document.head.appendChild(this.styleEl);
 	}
 
+	hide() {
+		if(this.styleEl) {
+			document.head.removeChild(this.styleEl)
+		}
+	}
+
 	onunload() {
-		document.head.removeChild(this.styleEl)
+		this.hide()
+	}
+
+	async loadSettings() {
+		this.settings = Object.assign(
+			{ autoHide: true },
+			await this.loadData()
+		)
+	}
+}
+
+class MySetting extends PluginSettingTab {
+	plugin: MyPlugin
+
+	constructor(app: App, plugin: MyPlugin) {
+		super(app, plugin)
+		this.plugin = plugin
+	}
+
+	display() {
+		const { containerEl } = this
+		containerEl.empty()
+
+		new Setting(containerEl)
+			.setName('启用完成隐藏')
+			.addToggle(toggle => {
+				toggle.setValue(this.plugin.settings.autoHide)
+				toggle.onChange(bool => {
+					this.plugin.settings.autoHide = bool
+					this.plugin.saveSettings()
+					bool ? this.plugin.show() : this.plugin.hide()
+				})
+			})
 	}
 }

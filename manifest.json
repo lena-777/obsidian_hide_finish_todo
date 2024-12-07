@@ -1,11 +1,20 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"id": "hide-completed-todos",
+	"name": "Hide Completed Todos",
+	"version": "0.1.0",
+	"author": "Your Name",
+	"description": "Hides the content of completed todos.",
+	"minAppVersion": "0.9.7",
+	"permissions": [
+		"activeTab"
+	],
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"]
+		}
+	]
 }

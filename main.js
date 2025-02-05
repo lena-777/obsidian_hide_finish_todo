@@ -33,7 +33,10 @@ var MyPlugin = class extends import_obsidian.Plugin {
     await this.loadSettings();
     this.styleEl = document.createElement("style");
     this.styleEl.innerHTML = `
-				.HyperMD-task-line[data-task="x"] {
+				.HyperMD-task-line[data-task="x"],
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-1,
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-2,
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-3 {
 						display: none!important;
 				}
 			`;

@@ -1,6 +1,6 @@
 {
-	"id": "claydi-plugin",
-	"name": "Claydi Plugin",
+	"id": "hide_finish_todo",
+	"name": "hide_finish_todo",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "claydi用于学习的个人插件",

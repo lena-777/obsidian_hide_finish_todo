@@ -13,7 +13,10 @@ export default class MyPlugin extends Plugin {
 
 		this.styleEl = document.createElement('style');
 		this.styleEl.innerHTML = `
-				.HyperMD-task-line[data-task="x"] {
+				.HyperMD-task-line[data-task="x"],
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-1,
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-2,
+				.HyperMD-task-line[data-task="x"] ~ .cm-line.cm-indent-3 {
 						display: none!important;
 				}
 			`;
@@ -21,7 +24,6 @@ export default class MyPlugin extends Plugin {
 		if (this.settings.autoHide) {
 			this.show()
 		}
-
 
 		this.addSettingTab(new MySetting(this.app, this))
 	}
